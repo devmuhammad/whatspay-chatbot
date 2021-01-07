@@ -17,7 +17,7 @@ export class BotController {
         // We send the fulfillment text received back to our user via Twilio
         sendMessage(From, To, result.fulfillmentText)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
           })
           .catch((error) => {
             console.error("error is ", error);

@@ -1,7 +1,10 @@
 // dialogflow.ts
 
 const dialogflow = require("dialogflow");
+// const dialogflow = require("@google-cloud/dialogflow-cx");
 const credentials = require("../../credentials.json");
+const location = 'global';
+const agentId = '2ebe5609-9337-44a2-be25-1334cc0af575';
 
 const sessionClient = new dialogflow.SessionsClient({
   credentials: credentials
@@ -17,6 +20,7 @@ export const runQuery = (query: string, number: string) => {
       // Create a new session
 
       const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+      // const sessionPath = sessionClient.projectLocationAgentSessionPath(projectId,location, agentId, sessionId); CX
 
       // The text query request.
       const request = {
@@ -25,16 +29,24 @@ export const runQuery = (query: string, number: string) => {
           text: {
             // The query to send to the dialogflow agent
             text: query,
-            // The language used by the client (en-US)
+            // The language used by the client (en-US) for ES
             languageCode: "en-US"
-          }
+          },
+            // The language used by the client (en-US) for CX
+            // languageCode: "en"
         }
       };
 
-      // Send request and log result
-      const responses = await sessionClient.detectIntent(request);
+      // Send request and log result CX
+      // const [response] = await sessionClient.detectIntent(request);
 
+      // const {responseMessages} = response.queryResult;
+
+      // const result = responseMessages[0].text.text[0]
+
+      const responses = await sessionClient.detectIntent(request);
       const result = responses[0].queryResult;
+      
 
       resolve(result);
     } catch (error) {
